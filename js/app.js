@@ -14,7 +14,7 @@ function getData(){
     .then( res => res.json())
     .then( json =>{
         showSurahInContainer(json.data);
-        surahName = getAyahAndSurahNumber();
+        getAyahAndSurahNumber();
     })
 }
 
@@ -39,8 +39,6 @@ function showSurahInContainer(data){
     }
 }
 
-
-
 // getting all surah number
 function getAyahAndSurahNumber(){
     const surahNameArray = document.querySelectorAll('#surah-name-container #surah-no');
@@ -48,21 +46,62 @@ function getAyahAndSurahNumber(){
     surahNameArray.forEach((m,index)=>{
         m.addEventListener('click',()=>{
             // playlist push
+            
             const url = `https://api.quran.sutanlab.id/surah/${index+1}`;
             fetch(url)
             .then(res => res.json())
             .then(json => {
+                ayahLinkAudio = [];
+                ayahtext = [];
+                console.log('audio',ayahLinkAudio);
+                console.log('text',ayahtext);
+                console.log('clicked');
                 let allAyah =json.data.verses;
                 allAyah.forEach((ayah) =>{
                     ayahLinkAudio.push(ayah.audio.primary);
                     ayahtext.push(ayah.text.arab);
                 })
-                console.log(ayahLinkAudio);
-                console.log(ayahtext);
+
+                let ayahIndex = 0;
+                ayahPlayer(ayahIndex);
+                document.getElementById('audio-player').addEventListener('ended', ()=>{
+                    ayahIndex++;
+                    if(ayahIndex < ayahLinkAudio.length){
+                        ayahPlayer(ayahIndex);
+                    }
+                    else{
+                        ayahIndex = 0 ;
+                        audio.pause();
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Sura has been ended',
+                            showConfirmButton: false,
+                            timer: 1500
+                          })
+                    }
+                })
+                document.getElementById('prev').addEventListener('click',()=>{
+                    ayahIndex--;
+                    ayahPlayer(ayahIndex);
+                })
+                document.getElementById('next').addEventListener('click',()=>{
+                    ayahIndex++;
+                    ayahPlayer(ayahIndex);
+                })
+                function ayahPlayer(index){
+                    const audioPlayer = document.getElementById('audio-player');
+                    const ayahTextBox = document.getElementById('ayah-text-box');
+                    ayahTextBox.innerHTML=`
+                    <p class="py-3 px-auto">${ayahtext[index]}</p>
+                    `;
+                    audioPlayer.src=ayahLinkAudio[index];
+                    audioPlayer.play();
+                }
+                
             })
         })
     });
-    return surahNameArray;
 }
 
 // audio part 

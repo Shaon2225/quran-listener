@@ -27,3 +27,13 @@ body{
     left: 0px;
     z-index: 10;
 }
+
+.bg-custom-color{
+    background-color:rgb(68, 65, 65);
+    opacity: 0.8;
+}
+.bg-custom-color-two{
+    background-color:rgb(197, 195, 159);
+    font-weight: 700;
+    border: 0;
+}
