@@ -1,0 +1,29 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
+
+#surah-container{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+}
+
+.sura-name-container{
+    border-radius:10px ;
+    display: grid;
+    grid-template-columns: repeat(1,1fr);
+    gap: 10px;
+    margin: 0.75rem;
+}
+
+.sura-name-container div {
+    padding: 0.5rem;
+}
+
+.z-index-no{
+    position: relative;
+    top: -40px;
+    left: 0px;
+    z-index: 10;
+}
